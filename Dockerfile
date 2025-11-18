@@ -1,14 +1,14 @@
-# Usamos una base ligera
+# Usamos Python porque tiene un servidor web simple integrado
 FROM python:3.11-slim
 
 # Carpeta de trabajo
 WORKDIR /app
 
-# Copiamos todos tus archivos (html, css, tsx)
+# Copiamos TODOS tus archivos (index.html, .tsx, .ts, etc.)
 COPY . .
 
-# Abrimos el puerto
+# Exponemos el puerto 8080
 EXPOSE 8080
 
-# Lanzamos un servidor web simple para mostrar tu HTML
+# Comando mágico: Inicia un servidor web simple que entrega los archivos tal cual
 CMD ["python", "-m", "http.server", "8080"]
