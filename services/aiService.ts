@@ -50,9 +50,8 @@ const getApiKey = (): string => {
 };
 
 const getGenAIClient = () => {
-    const key = getApiKey();
-    if (!key) throw new Error("API Key no configurada");
-    return new GoogleGenAI({ apiKey: key });
+    const apiKey = getApiKey(); // Tu función helper para obtener la key
+    return new GoogleGenAI({ apiKey });
 };
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
@@ -254,6 +253,7 @@ export const generateStudyPlan = async (dailyHours: number, studyDays: string[],
         const dayMap: { [key: string]: string } = { 'Do': 'Domingo', 'Lu': 'Lunes', 'Ma': 'Martes', 'Mi': 'Miércoles', 'Ju': 'Jueves', 'Vi': 'Viernes', 'Sá': 'Sábado' };
         const fullDayNames = studyDays.map(d => dayMap[d]).join(', ');
         const learningStyle = getLearningStyle();
+        const ai = getGenAIClient();
 
         const prompt = `Genera un plan de estudio detallado para el ENARM en formato JSON.
         
