@@ -2,7 +2,10 @@
 export default {
   content: [
     "./index.html",
-    "./**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./views/**/*.{js,ts,jsx,tsx}", // Asegúrate de incluir tus carpetas
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./*.{js,ts,jsx,tsx}" // Incluye archivos en la raíz como App.tsx
   ],
   darkMode: 'class',
   theme: {
