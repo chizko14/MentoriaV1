@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MentorIA - Tutor ENARM</title>
+    
+    <!-- 1. Tailwind CSS (Cargado desde CDN público) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. Configuración de Tema (Tu configuración original preservada) -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        border: 'hsl(214.3 31.8% 91.4%)',
+                        input: 'hsl(214.3 31.8% 91.4%)',
+                        ring: 'hsl(222.2 84% 4.9%)',
+                        background: 'hsl(210 40% 98%)',
+                        foreground: 'hsl(222.2 84% 4.9%)',
+                        primary: {
+                            DEFAULT: 'hsl(221.2 83.2% 53.3%)',
+                            foreground: 'hsl(210 40% 98%)',
+                        },
+                        secondary: {
+                            DEFAULT: 'hsl(210 40% 96.1%)',
+                            foreground: 'hsl(222.2 47.4% 11.2%)',
+                        },
+                        destructive: {
+                            DEFAULT: 'hsl(0 84.2% 60.2%)',
+                            foreground: 'hsl(210 40% 98%)',
+                        },
+                        muted: {
+                            DEFAULT: 'hsl(210 40% 96.1%)',
+                            foreground: 'hsl(215.4 16.3% 46.9%)',
+                        },
+                        accent: {
+                            DEFAULT: 'hsl(210 40% 96.1%)',
+                            foreground: 'hsl(222.2 47.4% 11.2%)',
+                        },
+                        popover: {
+                            DEFAULT: 'hsl(0 0% 100%)',
+                            foreground: 'hsl(222.2 84% 4.9%)',
+                        },
+                        card: {
+                            DEFAULT: 'hsl(0 0% 100%)',
+                            foreground: 'hsl(222.2 84% 4.9%)',
+                        },
+                    },
+                    borderRadius: {
+                        lg: `0.5rem`,
+                        md: `calc(0.5rem - 2px)`,
+                        sm: 'calc(0.5rem - 4px)',
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- 3. Mapa de Importaciones (El GPS para que el navegador encuentre las librerías) -->
+    <!-- Usamos esm.sh que SI permite CORS -->
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
+    "lucide-react": "https://esm.sh/lucide-react@0.263.1",
+    "@google/genai": "https://esm.sh/@google/genai@0.1.1",
+    "recharts": "https://esm.sh/recharts@2.12.0",
+    "react-markdown": "https://esm.sh/react-markdown@9.0.1",
+    "@/": "./",
+    "@/components/": "./components/",
+    "@/services/": "./services/",
+    "@/views/": "./views/",
+    "@/types": "./types.ts",
+    "@/hooks/": "./hooks/",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "remark-gfm": "https://aistudiocdn.com/remark-gfm@^4.0.1"
+  }
+}
+</script>
+
+    <!-- 4. Babel (El traductor) -->
+    <!-- Permite que el navegador entienda archivos .tsx -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Estilos base para la pantalla de carga -->
+    <style>
+        body { background-color: #f8fafc; margin: 0; font-family: 'Inter', sans-serif; }
+        #loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #64748b;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p>Iniciando MentorIA...</p>
+        </div>
+    </div>
+
+    <!-- 5. Service Worker (Opcional, para caché) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            // Desregistramos workers viejos para limpiar errores
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+    </script>
+
+    <!-- 6. PUNTO DE ENTRADA -->
+    <!-- IMPORTANTE: type="text/babel" le dice al navegador que use Babel para traducir el TSX -->
+    <script type="text/babel" data-type="module" src="./index.tsx"></script>
+</body>
+</html>

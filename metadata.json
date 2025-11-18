@@ -1,0 +1,7 @@
+{
+  "name": "Mentoria",
+  "description": "Mentoria es una plataforma de estudio integral y altamente personalizada, diseñada específicamente para médicos que se preparan para el Examen Nacional de Aspirantes a Residencias Médicas (ENARM) en México. Su objetivo es ir más allá de un simple banco de preguntas, actuando como un 'mentor de IA' que adapta la experiencia de estudio al perfil único de cada usuario.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
