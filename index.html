@@ -1,88 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MentorIA - Tutor ENARM</title>
+    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="Tutor de estudio inteligente para el ENARM">
     
-    <!-- 1. Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#2563eb',
-                        secondary: '#475569',
-                        background: '#f8fafc',
-                        foreground: '#0f172a',
-                        muted: '#f1f5f9',
-                        border: '#e2e8f0'
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- 2. Mapa de Importaciones (Corregido) -->
-    <script type="importmap">
-    {
-        "imports": {
-            "react": "https://esm.sh/react@18.2.0?dev",
-            "react-dom/client": "https://esm.sh/react-dom@18.2.0/client?dev",
-            "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime?dev",
-            "lucide-react": "https://esm.sh/lucide-react@0.263.1?dev",
-            
-            "@google/genai": "https://esm.sh/@google/genai?dev", 
-            
-            "recharts": "https://esm.sh/recharts@2.12.0?dev",
-            "react-markdown": "https://esm.sh/react-markdown@9.0.1?dev",
-            
-            "@/": "./",
-            "@/components/": "./components/",
-            "@/services/": "./services/",
-            "@/views/": "./views/",
-            "@/types": "./types.ts",
-            "@/hooks/": "./hooks/"
-        }
-    }
-    </script>
-
-    <!-- 3. Babel -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <style>
-        body { background-color: #f8fafc; margin: 0; font-family: sans-serif; }
-        #loading-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            color: #475569;
-        }
-        .spinner {
-            border: 4px solid #e2e8f0;
-            border-top: 4px solid #2563eb;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 1rem;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
+    <!-- Manifest y Service Worker -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "recharts": "https://aistudiocdn.com/recharts@^3.4.1",
+    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
+    "remark-gfm": "https://aistudiocdn.com/remark-gfm@^4.0.1",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
+  }
+}
+</script>
 </head>
-<body>
-    <div id="root">
-        <div id="loading-screen">
-            <div class="spinner"></div>
-            <p>Cargando MentorIA...</p>
-        </div>
-    </div>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Registro del Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('SW registrado:', reg.scope))
+            .catch(err => console.log('SW error:', err));
+        });
+      }
+    </script>
 
-    <!-- 4. Punto de entrada -->
-    <script type="text/babel" data-type="module" src="./index.tsx"></script>
-</body>
+    <!-- Punto de entrada: Vite se encarga del resto -->
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>
