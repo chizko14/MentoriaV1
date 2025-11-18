@@ -1,21 +1,24 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-// Configuración simplificada y robusta
-export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './'),
+export default defineConfig(({ mode }) => {
+  // Cargar variables de entorno
+  const env = loadEnv(mode, process.cwd(), '');
+  
+  return {
+    plugins: [react()],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './'), // Esto permite usar @/components/...
+      },
     },
-  },
-  build: {
-    outDir: 'dist',
-    sourcemap: false,
-  },
-  // Definimos las variables de entorno de forma segura para el cliente
-  define: {
-    'process.env': process.env
-  }
+    // Esto inyecta tus variables de entorno en el código del navegador
+    define: {
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+    },
+    build: {
+      outDir: 'dist',
+    }
+  };
 });
