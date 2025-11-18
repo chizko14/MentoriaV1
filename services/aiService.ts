@@ -35,7 +35,7 @@ const getApiKey = (): string => {
     
     // 2. Si no está, intenta obtenerla de las variables de entorno de Vite
     if (!key) {
-        key = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_API_KEY;
+        key = import.env.VITE_GEMINI_API_KEY || import.env.VITE_API_KEY;
     }
     
     // 3. Si aún no hay clave, lanza error
