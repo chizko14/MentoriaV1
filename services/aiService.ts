@@ -3,6 +3,7 @@ import { AIMessage, Quiz, Specialty, StudyTask, DailyTip, Flashcard, ClinicalCas
 import { getLearningStyle } from './progressService';
 import { showToast } from './eventService';
 
+
 // ---------------------------------------------------------------------------
 // 1. CONFIGURACIÓN GENERAL
 // ---------------------------------------------------------------------------
@@ -28,6 +29,32 @@ const MEDICAL_SAFETY_SETTINGS = [
 // ---------------------------------------------------------------------------
 // Se crea una única instancia del cliente que será utilizada por todas las funciones del servicio.
 // La API Key se obtiene directamente del entorno, como indican las directrices.
+const getApiKey = (): string => {
+    // 1. Intenta obtenerla de localStorage (si el usuario la guardó manualmente)
+    let key = localStorage.getItem('gemini_api_key');
+    
+    // 2. Si no está, intenta obtenerla de las variables de entorno de Vite
+    if (!key) {
+        key = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_API_KEY;
+    }
+    
+    // 3. Si aún no hay clave, lanza error
+    if (!key) {
+        const msg = "Falta la API Key. Ve a 'Admin Libros' o 'Perfil' para configurarla.";
+        console.error(msg);
+        // Opcional: No lanzar error aquí para permitir que la app cargue y muestre un aviso visual
+        // throw new Error(msg); 
+        return ""; // Retorna vacío para manejarlo en la UI
+    }
+    return key;
+};
+
+const getGenAIClient = () => {
+    const key = getApiKey();
+    if (!key) throw new Error("API Key no configurada");
+    return new GoogleGenAI({ apiKey: key });
+};
+
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
 
 // ---------------------------------------------------------------------------
