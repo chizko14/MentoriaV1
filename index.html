@@ -2,19 +2,36 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/icon-192x192.png" />
+    <link rel="icon" type="image/svg+xml" href="/icon-192.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MentorIA - Tutor ENARM</title>
     <meta name="description" content="Tutor de estudio inteligente para el ENARM">
+    <meta name="theme-color" content="#2563eb">
     
     <!-- Manifest para PWA -->
     <link rel="manifest" href="/manifest.json">
+    
+    <!-- Script de limpieza de Service Worker (El "Exorcismo" 👻) -->
+    <!-- Esto es vital para asegurarnos de que versiones viejas y rotas no interfieran -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+              console.log('Desregistrando Service Worker antiguo:', registration);
+              registration.unregister();
+            }
+          });
+        });
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     
     <!-- PUNTO DE ENTRADA VITE -->
     <!-- Importante: type="module" y apuntando directo a tu index.tsx -->
+    <!-- Vite transformará esto automáticamente en el build -->
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
