@@ -2,11 +2,10 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/icon-192x192.png" /> 
+    <link rel="icon" type="image/svg+xml" href="/icon-192.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MentorIA - Tutor ENARM</title>
     <meta name="description" content="Tutor de estudio inteligente para el ENARM">
-    <meta name="theme-color" content="#2563eb">
     
     <!-- Manifest para PWA -->
     <link rel="manifest" href="/manifest.json">
@@ -17,17 +16,5 @@
     <!-- PUNTO DE ENTRADA VITE -->
     <!-- Importante: type="module" y apuntando directo a tu index.tsx -->
     <script type="module" src="/index.tsx"></script>
-    
-    <!-- Script de limpieza de Service Workers antiguos -->
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-          for(let registration of registrations) {
-            // Desregistramos workers viejos para evitar conflictos de caché
-            registration.unregister();
-          }
-        });
-      }
-    </script>
   </body>
 </html>
