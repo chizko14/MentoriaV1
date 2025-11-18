@@ -253,7 +253,7 @@ export const generateStudyPlan = async (dailyHours: number, studyDays: string[],
         const dayMap: { [key: string]: string } = { 'Do': 'Domingo', 'Lu': 'Lunes', 'Ma': 'Martes', 'Mi': 'Miércoles', 'Ju': 'Jueves', 'Vi': 'Viernes', 'Sá': 'Sábado' };
         const fullDayNames = studyDays.map(d => dayMap[d]).join(', ');
         const learningStyle = getLearningStyle();
-        const ai = getGenAIClient();
+        
 
         const prompt = `Genera un plan de estudio detallado para el ENARM en formato JSON.
         
