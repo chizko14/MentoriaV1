@@ -55,8 +55,6 @@ const getGenAIClient = () => {
     return new GoogleGenAI({ apiKey: key });
 };
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
-
 // ---------------------------------------------------------------------------
 // 3. SCHEMAS (Para validación de respuestas JSON)
 // ---------------------------------------------------------------------------
