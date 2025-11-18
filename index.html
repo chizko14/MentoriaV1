@@ -1,25 +1,92 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MentorIA</title>
-    <meta name="description" content="Tutor inteligente para el ENARM">
-    <!-- Service Worker de limpieza -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MentorIA - Tutor ENARM</title>
+    
+    <!-- 1. Cargar Tailwind CSS (Estilos rápidos) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. Configurar Tailwind (Tus colores personalizados) -->
     <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-          for(let registration of registrations) {
-            registration.unregister();
-          }
-        });
-      }
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#475569',
+                        background: '#f8fafc',
+                        foreground: '#0f172a',
+                        muted: '#f1f5f9',
+                        border: '#e2e8f0'
+                    }
+                }
+            }
+        }
     </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <!-- El punto de entrada debe ser un módulo -->
-    <script type="module" src="/index.tsx"></script>
-  </body>
+
+    <!-- 3. Mapa de Importaciones (El GPS del navegador) -->
+    <!-- Esto le dice al navegador dónde buscar "react" y tus archivos -->
+    <script type="importmap">
+    {
+        "imports": {
+            "react": "https://esm.sh/react@18.2.0?dev",
+            "react-dom/client": "https://esm.sh/react-dom@18.2.0/client?dev",
+            "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime?dev",
+            "lucide-react": "https://esm.sh/lucide-react@0.263.1?dev",
+            "@google/genai": "https://esm.sh/@google/genai@0.1.1?dev",
+            "recharts": "https://esm.sh/recharts@2.12.0?dev",
+            "react-markdown": "https://esm.sh/react-markdown@9.0.1?dev",
+            
+            "@/": "./",
+            "@/components/": "./components/",
+            "@/services/": "./services/",
+            "@/views/": "./views/",
+            "@/types": "./types.ts",
+            "@/hooks/": "./hooks/",
+            "@/utils/": "./utils/"
+        }
+    }
+    </script>
+
+    <!-- 4. Babel (El traductor de código) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body { background-color: #f8fafc; margin: 0; font-family: sans-serif; }
+        #loading-screen {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; color: #475569;
+        }
+        .spinner {
+            border: 4px solid #e2e8f0; border-top: 4px solid #2563eb; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 1rem;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p>Iniciando MentorIA...</p>
+        </div>
+    </div>
+
+    <!-- Script de Limpieza de Service Worker (Mata al Zombie automáticamente) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                    console.log("Service Worker eliminado para evitar conflictos.");
+                }
+            });
+        }
+    </script>
+
+    <!-- 5. PUNTO DE ENTRADA -->
+    <!-- data-type="module" es vital para que funcionen los imports -->
+    <script type="text/babel" data-type="module" src="./index.tsx"></script>
+</body>
 </html>
