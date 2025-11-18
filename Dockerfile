@@ -1,37 +1,15 @@
-# ETAPA 1: CONSTRUCCIÓN (The Kitchen)
-FROM node:20-alpine as builder
+# Usamos una imagen ligera de Python para servir archivos estáticos
+# Esto es perfecto para el método "sin build"
+FROM python:3.11-slim
 
-# Definir variables de entorno para la construcción
-ARG VITE_API_KEY
-ENV VITE_API_KEY=$VITE_API_KEY
-
+# Establecemos el directorio de trabajo
 WORKDIR /app
 
-# Copiar dependencias
-COPY package*.json ./
-RUN npm install
-
-# Copiar código fuente
+# Copiamos TODOS los archivos al contenedor
 COPY . .
 
-# Construir la aplicación (Esto crea la carpeta /dist con index.html y .js)
-RUN npm run build
-
-# ETAPA 2: SERVIDOR (The Waiter)
-FROM nginx:alpine
-
-# Copiar los archivos ya cocinados al servidor Nginx
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Configuración para que la navegación (Rutas) funcione bien
-RUN echo 'server { \
-    listen 8080; \
-    location / { \
-        root /usr/share/nginx/html; \
-        index index.html index.htm; \
-        try_files $uri $uri/ /index.html; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
-
+# Exponemos el puerto 8080 (obligatorio para Cloud Run)
 EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
+
+# Iniciamos un servidor web simple que entrega los archivos tal cual
+CMD ["python", "-m", "http.server", "8080"]
