@@ -4,12 +4,12 @@
   "description": "Mentoria es una plataforma de estudio integral y altamente personalizada, diseñada específicamente para médicos que se preparan para el Examen Nacional de Aspirantes a Residencias Médicas (ENARM) en México.",
   "icons": [
     {
-      "src": "/icon-192x192.png",
+      "src": "/icons/icon-192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/icon-512x512.png",
+      "src": "/icons/icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
