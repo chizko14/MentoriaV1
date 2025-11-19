@@ -1,4 +1,4 @@
-import { GoogleGenAI, Type, Modality, HarmCategory, HarmBlockThreshold, GroundingChunk } from '@google/genai';
+import { GoogleGenAI, Type, Modality, HarmCategory, HarmBlockThreshold } from '@google/genai';
 import { AIMessage, Quiz, Specialty, StudyTask, DailyTip, Flashcard, ClinicalCase, FillInTheBlanks, Difficulty, AnnualMasterPlan } from '../types';
 import { getLearningStyle } from './progressService';
 import { showToast } from './eventService';
@@ -30,13 +30,21 @@ const MEDICAL_SAFETY_SETTINGS = [
 // Se crea una única instancia del cliente que será utilizada por todas las funciones del servicio.
 // La API Key se obtiene directamente del entorno, como indican las directrices.
 const getApiKey = (): string => {
-    // 1. Intenta obtenerla de localStorage (si el usuario la guardó manualmente)
+    // 1. Intentar desde localStorage (configuración del usuario)
     let key = localStorage.getItem('gemini_api_key');
     
-    // 2. Si no está, intenta obtenerla de las variables de entorno de Vite
+    // 2. Intentar desde variables de entorno (Vite)
     if (!key) {
+        // Vite expone variables con import.meta.env
         key = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_API_KEY;
     }
+
+    if (!key) {
+        console.warn("API Key no encontrada. Asegúrate de configurarla en la App o en el entorno.");
+        return ""; 
+    }
+    return key;
+};
     
     // 3. Si aún no hay clave, lanza error
     if (!key) {
@@ -50,8 +58,9 @@ const getApiKey = (): string => {
 };
 
 const getGenAIClient = () => {
-    const apiKey = getApiKey(); // Tu función helper para obtener la key
-    return new GoogleGenAI({ apiKey });
+    const key = getApiKey();
+    if (!key) throw new Error("API Key no configurada");
+    return new GoogleGenAI({ apiKey: key });
 };
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
@@ -138,15 +147,20 @@ const generateStandardGeminiResponse = async (question: string): Promise<string>
 
 const jsonCall = async <T>(prompt: string, schema: any): Promise<T | null> => {
     try {
-        // FIX: Moved `safetySettings` into the `config` object.
+        const ai = getGenAIClient(); // Obtiene el cliente con la key actual
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
             contents: [{ parts: [{ text: prompt }] }],
-            config: { ...MEDICAL_AI_CONFIG, responseMimeType: 'application/json', responseSchema: schema, safetySettings: MEDICAL_SAFETY_SETTINGS },
+            config: { 
+                ...MEDICAL_AI_CONFIG, 
+                responseMimeType: 'application/json', 
+                responseSchema: schema, 
+                safetySettings: MEDICAL_SAFETY_SETTINGS 
+            },
         });
         return JSON.parse(response.text) as T;
     } catch (error) {
-        console.error(`Error en jsonCall para prompt "${prompt.substring(0, 50)}..."`, error);
+        console.error(`Error en jsonCall:`, error);
         return null;
     }
 };
